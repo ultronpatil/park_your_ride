@@ -1,0 +1,53 @@
+.Home {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.parking-lot-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(5px); 
+  z-index: -1;
+}
+
+.h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  color: white; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+}
+
+.p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  color: white; 
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+}
+
+.cta-button {
+  padding: 15px 30px;
+  background-color: #5cb85c;
+  color: white;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); 
+  z-index: 1;
+}
+
+.cta-button:hover {
+  background-color: #4cae4c;
+}
+

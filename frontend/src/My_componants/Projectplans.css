@@ -1,0 +1,38 @@
+.project-plans-container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .project-plans-container h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  
+  .project-plans-container ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .project-plans-container li {
+    margin-bottom: 20px;
+    font-size: 20px;
+    line-height: 1.5;
+  }
+  
+  .project-plans-container li strong {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .project-plans-container li::before {
+    content: '\2022';
+    color: #1E90FF;
+    font-size: 24px;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+  
