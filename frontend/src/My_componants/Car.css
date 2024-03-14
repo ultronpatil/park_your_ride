@@ -1,0 +1,29 @@
+/* .button {
+    width: 125px;
+    height: 225px;
+    padding: 10px;
+    border: 2px solid #000000;
+    cursor: pointer;
+    margin-top: 10px; 
+    margin-left: 5px; 
+  }
+   */
+   /* Car.css */
+.car-button {
+  width: 100px;
+  height: 50px;
+  margin: 10px;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.occupied {
+  background-color: red;
+}
+
+.vacant {
+  background-color: green;
+}

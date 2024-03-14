@@ -1,0 +1,11 @@
+{
+    "name": "hardware",
+    "version": "0.0.1",
+    "description": "sample",
+    "dependencies": {
+        "fs": "^0.0.1-security",
+        "http": "^0.0.1-security",
+        "serialport": "^10.0.1",
+        "socket.io": "4.7.4"
+    }
+}

@@ -1,0 +1,87 @@
+.about-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 50px;
+  text-align: center;
+  background-image: url("about-img.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.about-page h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.about-page p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
+  max-width: 800px;
+}
+
+/* .buttons-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+} */
+
+.button-icon {
+  width: 500px;
+  height: 120px;
+  margin-bottom: 30px;
+  align-items: center;
+  background-color: rgb(250, 250, 250);
+  border: 2px solid rgb(0, 149, 255);
+  border-radius: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+.button-icon:hover {
+  background-color: rgb(222, 222, 222);
+}
+
+.button-icon img {
+  height: 80px;
+  margin-right: 5px;
+}
+
+.button-icon span {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+@media only screen and (min-width: 768px) {
+  .about-page {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .about-content {
+    max-width: 50%;
+    text-align: left;
+    margin-right: 50px;
+  }
+
+  .about-page h1 {
+    font-size: 4rem;
+  }
+
+  .about-page p {
+    font-size: 1.4rem;
+    margin-bottom: 60px;
+  }
+/* 
+  .buttons-container {
+    margin-right: 0;
+    margin-bottom: 1000px;
+  } */
+
+  .button-icon {
+    margin-top: 0;
+    margin-right: 20px;
+  }
+}

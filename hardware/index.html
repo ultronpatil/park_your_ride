@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js'></script>
+</head>
+<body>
+    <h1>Communicating from an Arduino to Node.js</h1>
+    <div id="sample"></div>
+    <script>
+        var socket = io('http://localhost:5500'); // Change the server address if necessary
+
+        socket.on('data', function(data) {
+            console.log(data); // Debugging: Log the received data to console
+            // Append the received data to the sample div
+            document.getElementById('sample').innerHTML += "<div>" + data + "</div>";
+        });
+    </script>
+</body>
+</html>
