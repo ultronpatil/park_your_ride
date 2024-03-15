@@ -60,7 +60,7 @@ function Login() {
           <div className='signup-here'>
             New user? <Link to="/signup">Sign up here</Link>.
           </div>
-          <button className="b1" type="submit" onClick={handleLogin}>Login</button>
+          <button className="login_button" type="submit" onClick={handleLogin}>Login</button>
 
         </form>
         {showInvalidPopup && (

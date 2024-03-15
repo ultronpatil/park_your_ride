@@ -130,7 +130,7 @@ function SignupForm() {
           <div className="login-here">
             Already user? <Link to="/login">Login here</Link>.
           </div>
-          <button className="b2" type="submit" onClick={PostData}>Submit</button>
+          <button className="sign_button" type="submit" onClick={PostData}>Submit</button>
 
         </form>
         {showInvalidPopup && (

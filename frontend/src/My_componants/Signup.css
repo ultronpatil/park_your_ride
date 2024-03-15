@@ -100,7 +100,7 @@ form {
 .name input::placeholder {
   opacity: 0.3; /* Set placeholder opacity to make it faint */
 }
-.b2 {
+.sign_button{
   width: 475px; /* Set width to 500px */
   height: 50px; /* Set height to 30px */
   font-size: 2rem; /* Set font size to 2rem */
