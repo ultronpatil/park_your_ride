@@ -13,5 +13,9 @@ const vacantnotify = new mongoose.Schema({
   },
 });
 
-const Vacantnotifyv1 = mongoose.model("vacantnotifyv1", vacantnotify);
-Vacantnotifyv1.createIndexes();
+// const Vacantnotifyv1 = mongoose.model("vacantnotifyv1", vacantnotify);
+// Vacantnotifyv1.createIndexes();
+
+const V1 = mongoose.model('vacantv1', vacantnotify);
+
+module.exports = V1;

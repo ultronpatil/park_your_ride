@@ -31,7 +31,7 @@ io.on('connection', function (socket) {
     }
 });
 
-var port = new SerialPort('COM5', {
+var port = new SerialPort('COM6', {
     baudRate: 9600,
     dataBits: 8,
     stopBits: 1,
