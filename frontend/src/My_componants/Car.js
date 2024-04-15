@@ -95,27 +95,74 @@
 // };
 
 // export default Car;
+// import React, { useState } from 'react';
+// import './Car.css';
+
+// const Car = ({ bt_no, status }) => {
+//     const [buttonValue, setButtonValue] = useState(status ? 'occupied' : 'vacant');
+
+//     const handleStageV1 = async () => {
+//         try {
+//             const result = await fetch("/vacantv1", {
+//                 method: "post",
+//                 body: JSON.stringify({ status: "Booked", bt_no }), // Use bt_no prop
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//             });
+//             console.log("here");
+//             const data = await result.json();
+//             console.log(data);
+//             if (data.message === "state changed") {
+//                 alert("State changed");
+//                 setButtonValue("booked");
+//             } else {
+//                 alert("Button state failed");
+//             }
+//         } catch (error) {
+//             console.error("Error:", error);
+//             alert("An error occurred");
+//         }
+//     };
+
+//     return (
+//         <button className={`car-button ${buttonValue} `} onClick={handleStageV1}>Button {bt_no}</button>
+
+//     );
+// };
+
+// export default Car;
+
+
+
+
 import React, { useState } from 'react';
 import './Car.css';
 
 const Car = ({ bt_no, status }) => {
-    const [buttonValue, setButtonValue] = useState(status ? 'occupied' : 'vacant');
+    const [buttonValue, setButtonValue] = useState(status);
 
     const handleStageV1 = async () => {
         try {
+            let newStatus = '';
+            if (buttonValue === 'vacant') {
+                newStatus = 'booked';
+            } else if (buttonValue === 'booked') {
+                newStatus = 'occupied';
+            } else {
+                newStatus = 'vacant';
+            }
             const result = await fetch("/vacantv1", {
                 method: "post",
-                body: JSON.stringify({ status: "Booked", bt_no }), // Use bt_no prop
+                body: JSON.stringify({ status: newStatus, bt_no }), // Use bt_no prop
                 headers: {
                     "Content-Type": "application/json",
                 },
             });
-            console.log("here");
             const data = await result.json();
-            console.log(data);
             if (data.message === "state changed") {
                 alert("State changed");
-                setButtonValue("booked");
+                setButtonValue(newStatus);
             } else {
                 alert("Button state failed");
             }
@@ -126,9 +173,7 @@ const Car = ({ bt_no, status }) => {
     };
 
     return (
-        <div className={`car-button ${buttonValue}`}>
-            <button onClick={handleStageV1}>Button {bt_no}</button>
-        </div>
+        <button className={`car-button ${buttonValue}`} onClick={handleStageV1}>Button {bt_no}</button>
     );
 };
 
