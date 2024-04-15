@@ -20,6 +20,9 @@ app.use(express.json());
 app.use(require('./routes/auth'));
 const vacantv1Routes = require('./routes/vacant');
 app.use('/vacantv1', vacantv1Routes);
+const userInfoRoute = require('./routes/userinfo');
+app.use('/userinfo', userInfoRoute);
+
 const PORT = process.env.PORT;
 
 

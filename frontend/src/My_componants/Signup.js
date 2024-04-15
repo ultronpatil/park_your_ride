@@ -62,7 +62,7 @@ function SignupForm() {
   }
 
   return (
-    <div class="sign-background">
+    <div className="sign-background">
       <div className="sign-container">
 
         <form action="" method="POST">
