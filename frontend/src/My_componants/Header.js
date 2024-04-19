@@ -44,8 +44,13 @@ export default function Header(props) {
                   About
                 </NavLink>
               </li>
-              </ul>
-              <ul className="navbar-nav ms-auto mb-2 mb-lg-0" >
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/maps">
+                  Maps
+                </NavLink>
+              </li>
+            </ul>
+            <ul className="navbar-nav ms-auto mb-2 mb-lg-0" >
               <li className="nav-item">
                 <div className="profile-link-box">
                   <NavLink className="nav-link" to="/logout">

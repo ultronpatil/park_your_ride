@@ -21,8 +21,9 @@ app.use(require('./routes/auth'));
 const vacantv1Routes = require('./routes/vacant');
 app.use('/vacantv1', vacantv1Routes);
 const userInfoRoute = require('./routes/userinfo');
-app.use('/userinfo', userInfoRoute);
-
+app.use('/', userInfoRoute);
+const resetPasswordRouter = require('./routes/resetpassword');
+app.use('/', resetPasswordRouter);
 const PORT = process.env.PORT;
 
 

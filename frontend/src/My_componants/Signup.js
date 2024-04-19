@@ -1,15 +1,12 @@
-import { useState } from 'react'
-import { Link } from "react-router-dom";
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 import InvalidPopup from './InvalidPopup';
 import './Signup.css';
 
 function SignupForm() {
-
   const [showInvalidPopup, setShowInvalidPopup] = useState(false);
   const [showPasswordPopup, setShowPasswordPopup] = useState(false);
-
-  const history = useHistory();
   const [user, setUser] = useState({
     name: "",
     email: "",
@@ -18,19 +15,16 @@ function SignupForm() {
     password: "",
     conpassword: ""
   });
+  const history = useHistory();
 
-  let name, value;
   const handleInputs = (e) => {
-    name = e.target.name;
-    value = e.target.value;
-
+    const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   }
 
   const PostData = async (e) => {
     e.preventDefault();
-
-    const { name, email, vehicle, phone, password, conpassword } = user
+    const { name, email, vehicle, phone, password, conpassword } = user;
 
     let res = await fetch("/register", {
       method: "POST",
@@ -40,7 +34,6 @@ function SignupForm() {
       body: JSON.stringify({
         name, email, vehicle, phone, password, conpassword
       })
-
     });
 
     res = await res.json();
@@ -49,22 +42,21 @@ function SignupForm() {
       window.alert("Registration Successful");
       console.log("Registration Successful");
       history.push('/Login');
-    }
-    if (res.message === 'password are not matching') {
+    } else if (res.message === 'password are not matching') {
       setShowPasswordPopup(true);
       console.log("password are not matching");
-    }
-    else {
+    } else {
       setShowInvalidPopup(true);
       console.log("Invalid Registration");
     }
-
   }
+
+  const handleCloseInvalidPopup = () => setShowInvalidPopup(false);
+  const handleClosePasswordPopup = () => setShowPasswordPopup(false);
 
   return (
     <div className="sign-background">
       <div className="sign-container">
-
         <form action="" method="POST">
           <div className='title'>Create Account</div>
           <div className="name">
@@ -133,19 +125,20 @@ function SignupForm() {
           <button className="sign_button" type="submit" onClick={PostData}>Submit</button>
 
         </form>
-        {showInvalidPopup && (
-          <InvalidPopup trigger={true} setTrigger={setShowInvalidPopup}>
-            <h3>Invalid Credentials</h3>
-          </InvalidPopup>
-        )}
-        {showPasswordPopup && (
-          <InvalidPopup trigger={true} setTrigger={setShowPasswordPopup}>
-            <h3>Passwords are not mactching</h3>
-          </InvalidPopup>
-        )}
+
+        {/* Invalid Popup */}
+        <InvalidPopup show={showInvalidPopup} handleClose={handleCloseInvalidPopup} title="Invalid Credentials">
+          <h3>Invalid Credentials</h3>
+        </InvalidPopup>
+
+        {/* Password Mismatch Popup */}
+        <InvalidPopup show={showPasswordPopup} handleClose={handleClosePasswordPopup} title="Passwords Mismatch">
+          <h3>Passwords are not matching</h3>
+        </InvalidPopup>
       </div>
     </div>
   );
 }
 
 export default SignupForm;
+
