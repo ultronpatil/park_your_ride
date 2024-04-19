@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/UserSchema');
 const authenticate = require('../middleware/authenticate');
 
-router.get('/', authenticate, async (req, res) => {
+router.get('/userinfo', authenticate, async (req, res) => {
     try {
         // Fetch user details based on the user ID stored in req.userID
         const user = await User.findById(req.userID).select('name email');

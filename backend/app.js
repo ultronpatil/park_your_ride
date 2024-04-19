@@ -21,7 +21,7 @@ app.use(require('./routes/auth'));
 const vacantv1Routes = require('./routes/vacant');
 app.use('/vacantv1', vacantv1Routes);
 const userInfoRoute = require('./routes/userinfo');
-app.use('/', userInfoRoute);
+app.use('/userinfo', userInfoRoute);
 const resetPasswordRouter = require('./routes/resetpassword');
 app.use('/', resetPasswordRouter);
 const pdfRoute = require('./routes/saverecipt');
