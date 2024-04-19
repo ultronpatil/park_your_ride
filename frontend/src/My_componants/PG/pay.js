@@ -23,7 +23,7 @@ function Pay({ onPaymentSuccess }) {
     }
   };
 
-  const generatePDF = (response) => {
+  const generatePDF = async (response) => {
     const pdf = new jsPDF();
 
     // Add header text
@@ -63,6 +63,30 @@ function Pay({ onPaymentSuccess }) {
     document.body.appendChild(downloadLink);
     downloadLink.click();
     document.body.removeChild(downloadLink);
+
+    const pdfBase64 = pdf.output('datauristring');
+
+    try {
+      // Make a POST request to save the PDF receipt
+      const response = await fetch('http://localhost:3002/saverecipt', {
+        method: 'POST',
+        // mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userInfo._id,
+          pdfData: pdfBase64,
+        }),
+      });
+
+      // Handle response if needed
+      const data = await response.json();
+      console.log(data.message);
+    } catch (error) {
+      console.error('Error saving PDF receipt:', error);
+    }
+
   };
 
   const pay = async () => {
