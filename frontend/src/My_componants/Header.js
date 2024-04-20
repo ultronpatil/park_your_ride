@@ -53,7 +53,7 @@ export default function Header(props) {
             <ul className="navbar-nav ms-auto mb-2 mb-lg-0" >
               <li className="nav-item">
                 <div className="profile-link-box">
-                  <NavLink className="nav-link" to="/logout">
+                  <NavLink className="nav-link" to="/myprofile">
                     Profile
                   </NavLink>
                 </div>

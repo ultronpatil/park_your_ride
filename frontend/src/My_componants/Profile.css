@@ -44,4 +44,17 @@
       max-width: 100%;
     }
   }
-  
+
+.logout_button {
+  background-color: #f44336; /* Red background color */
+  color: white; /* White text color */
+  padding: 10px 20px; /* Padding */
+  border: none; /* No border */
+  cursor: pointer; /* Cursor on hover */
+  border-radius: 5px; /* Rounded corners */
+  margin-top: 10px; /* Top margin */
+}
+
+.logout_button:hover {
+  background-color: #d32f2f; /* Darker red background color on hover */
+}

@@ -26,7 +26,7 @@ function App() {
 
         <Route exact path='/parklevel' component={ParkLevel} />
         <Route exact path='/about' component={About} />
-        <Route exact path='/logout' component={Profile} />
+        <Route exact path='/myprofile' component={Profile} />
         <Route exact path='/projectplans' component={Projectplans} />
         <Route exact path='/socialmedia' component={SocialMedia} />
         <Route exact path='/contact' component={ContactUs} />
