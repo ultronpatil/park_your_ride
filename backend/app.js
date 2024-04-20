@@ -25,7 +25,7 @@ app.use('/userinfo', userInfoRoute);
 const resetPasswordRouter = require('./routes/resetpassword');
 app.use('/', resetPasswordRouter);
 const pdfRoute = require('./routes/saverecipt');
-app.use('/', pdfRoute);
+app.use('/saverecipt', pdfRoute);
 const PORT = process.env.PORT;
 
 

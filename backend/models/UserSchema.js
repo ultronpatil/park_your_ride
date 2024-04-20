@@ -56,9 +56,9 @@ const UserSchema = new mongoose.Schema({
       }
     }
   ],
-  pdfReceipt: {
+  pdfReceipts: [{
     type: String, // Store the PDF data as a base64 encoded string
-  }
+  }]
 })
 
 
