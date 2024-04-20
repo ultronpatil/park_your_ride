@@ -112,14 +112,22 @@ const Profile = () => {
       </Modal>
 
       {/* Logout Confirmation Modal */}
-      <Modal isOpen={logoutModalIsOpen} onRequestClose={() => setLogoutModalIsOpen(false)} style={customStyles}>
-        <div>
-          <h2>Logout Confirmation</h2>
-          <p>Are you sure you want to logout?</p>
-          <button onClick={confirmLogout}>Yes</button>
-          <button onClick={() => setLogoutModalIsOpen(false)}>No</button>
+      <Modal isOpen={logoutModalIsOpen} onRequestClose={() => setLogoutModalIsOpen(false)} className="logout-modal-container">
+        <div className="logout-modal-content">
+          <div className="logout-modal-header">
+            <h2>Logout Confirmation</h2>
+            <button className="logout-button" onClick={() => setLogoutModalIsOpen(false)}>Close</button>
+          </div>
+          <div className="logout-modal-body">
+            <p>Are you sure you want to logout?</p>
+          </div>
+          <div className="logout-modal-footer">
+            <button className="logout-button logout-button-danger" onClick={confirmLogout}>Yes</button>
+            <button className="logout-button logout-button-secondary" onClick={() => setLogoutModalIsOpen(false)}>No</button>
+          </div>
         </div>
       </Modal>
+
     </>
   );
 };
