@@ -1,0 +1,12 @@
+.map-content {
+    max-width: 800px; /* Maximum width for the map content */
+    margin: 0 auto; /* Center the map content */
+    padding: 20px; /* Add some padding around the map */
+    border: 1px solid black;
+  }
+  
+  #map {
+    width: 100%; /* Make the map container fill its parent */
+    height: 400px; /* Set a fixed height for the map */
+  }
+  

@@ -136,44 +136,68 @@
 
 
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
+// import './Car.css';
+
+// const Car = ({ bt_no, status }) => {
+//     const [buttonValue, setButtonValue] = useState(status);
+
+//     const handleStageV1 = async () => {
+//         try {
+//             let newStatus = '';
+//             if (buttonValue === 'vacant') {
+//                 newStatus = 'booked';
+//             } else if (buttonValue === 'booked') {
+//                 newStatus = 'occupied';
+//             } else {
+//                 newStatus = 'vacant';
+//             }
+//             const result = await fetch("/vacantv1", {
+//                 method: "post",
+//                 body: JSON.stringify({ status: newStatus, bt_no }), // Use bt_no prop
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//             });
+//             const data = await result.json();
+//             if (data.message === "state changed") {
+//                 alert("State changed");
+//                 setButtonValue(newStatus);
+//             } else {
+//                 alert("Button state failed");
+//             }
+//         } catch (error) {
+//             console.error("Error:", error);
+//             alert("An error occurred");
+//         }
+//     };
+
+//     return (
+//         <button className={`car-button ${buttonValue}`} onClick={handleStageV1}>Button {bt_no}</button>
+//     );
+// };
+
+// export default Car;
+import React from 'react';
 import './Car.css';
 
-const Car = ({ bt_no, status }) => {
-    const [buttonValue, setButtonValue] = useState(status);
-
-    const handleStageV1 = async () => {
-        try {
-            let newStatus = '';
-            if (buttonValue === 'vacant') {
-                newStatus = 'booked';
-            } else if (buttonValue === 'booked') {
-                newStatus = 'occupied';
-            } else {
-                newStatus = 'vacant';
-            }
-            const result = await fetch("/vacantv1", {
-                method: "post",
-                body: JSON.stringify({ status: newStatus, bt_no }), // Use bt_no prop
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            const data = await result.json();
-            if (data.message === "state changed") {
-                alert("State changed");
-                setButtonValue(newStatus);
-            } else {
-                alert("Button state failed");
-            }
-        } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred");
+const Car = ({ slotNumber, onSlotSelect, isSelected, isBooked }) => {
+    const handleClick = () => {
+        if (!isBooked) {
+            onSlotSelect(slotNumber);
+            alert("Proceed to payment");
+        } else {
+            alert("This slot is already booked");
         }
     };
 
     return (
-        <button className={`car-button ${buttonValue}`} onClick={handleStageV1}>Button {bt_no}</button>
+        <div
+            className={`car-slot ${isSelected ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
+            onClick={handleClick}
+        >
+            Car in slot {slotNumber}
+        </div>
     );
 };
 

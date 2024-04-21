@@ -1,3 +1,4 @@
+
 // import React, { useState, useEffect } from "react";
 // import jsPDF from "jspdf";
 
@@ -110,26 +111,32 @@
 //     paymentObject.open();
 //   };
 
-//   const sendPaymentDetailsToServer = (response, amount) => {
+//   const sendPaymentDetailsToServer = async (response, amount) => {
 //     const paymentData = {
 //       paymentDetails: response,
 //       amount: amount,
 //     };
 
-//     fetch("/create-order", {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify(paymentData),
-//     })
-//       .then((res) => res.json())
-//       .then((data) => {
-//         console.log("Payment details saved in the database:", data);
-//       })
-//       .catch((error) => {
-//         console.error("Error saving payment details:", error);
-//       });
+//     try {
+//       const requestOptions = {
+//         mode: 'no-cors',
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(paymentData),
+//       };
+
+//       const res = await fetch(`/saverecipt`, requestOptions);
+
+//       if (res.ok) {
+//         console.log("Payment receipt saved successfully");
+//       } else {
+//         console.error("Failed to save payment receipt:", res.statusText);
+//       }
+//     } catch (error) {
+//       console.error("Error saving payment receipt:", error);
+//     }
 //   };
 
 //   return (
@@ -147,12 +154,14 @@
 // }
 
 // export default Pay;
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect } from 'react';
 import jsPDF from "jspdf";
 
-function Pay({ onPaymentSuccess }) {
+function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
   const [userData, setUserData] = useState({});
 
+  // Fetch user data
   useEffect(() => {
     fetchUserInfo();
   }, []);
@@ -237,7 +246,7 @@ function Pay({ onPaymentSuccess }) {
 
     const options = {
       key: "rzp_test_xSvA8DOJ1bJvcC",
-      amount: parseInt(amount * 100),
+      amount: parseInt(amount * 100 * maxSelection), // Multiply by max selection
       currency: "INR",
       name: "ParkYourRide",
       description: "Test Transaction",
@@ -262,7 +271,8 @@ function Pay({ onPaymentSuccess }) {
   const sendPaymentDetailsToServer = async (response, amount) => {
     const paymentData = {
       paymentDetails: response,
-      amount: amount,
+      amount: amount * maxSelection, // Multiply by max selection
+      slots: selectedSlots // Pass selected slots
     };
 
     try {
@@ -279,6 +289,7 @@ function Pay({ onPaymentSuccess }) {
 
       if (res.ok) {
         console.log("Payment receipt saved successfully");
+        onPaymentSuccess();
       } else {
         console.error("Failed to save payment receipt:", res.statusText);
       }
@@ -291,9 +302,8 @@ function Pay({ onPaymentSuccess }) {
     <div className="PG">
       <button
         className="button_pay"
-        onClick={() => {
-          pay();
-        }}
+        onClick={pay}
+        disabled={selectedSlots.length === 0} // Disable button if no slots selected
       >
         Pay & book
       </button>

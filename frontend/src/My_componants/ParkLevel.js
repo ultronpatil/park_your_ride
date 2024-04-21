@@ -135,60 +135,111 @@
 // };
 
 
+// import React, { useEffect, useState } from "react";
+// import "./ParkLevel.css";
+// import Header from "./Header";
+// import { Footer } from "./Footer";
+// import Car from './Car';
+// import Pay from "./PG/pay";
+// import { io } from "socket.io-client";
 
+// export const ParkLevel = () => {
+//   const [receivedData, setReceivedData] = useState("");
+//   const [buttonStatus, setButtonStatus] = useState({
+//     1: false,
+//     2: false,
+//     3: false
+//   });
 
+//   useEffect(() => {
+//     const socket = io('http://localhost:5500');
 
+//     socket.on('data', (data) => {
+//       setReceivedData(data);
+//       const parsedData = JSON.parse(data);
+//       setButtonStatus({
+//         ...buttonStatus,
+//         [parsedData.bt_no]: parsedData.status === "Occupied" ? true : false
+//       });
+//     });
 
+//     return () => {
+//       socket.disconnect();
+//     };
+//   }, [buttonStatus]);
 
+//   return (
+//     <div>
+//       <Header />
 
+//       <div className="col-12 d-flex justify-content-center align-items-center">
+//         <Car bt_no={1} status={buttonStatus[1]} />
+//         <Car bt_no={2} status={buttonStatus[2]} />
+//         <Car bt_no={3} status={buttonStatus[3]} />
+//       </div>
+//       <div className="col-12 d-flex justify-content-center align-items-center"><Pay></Pay></div>
+//       <Footer />
+//     </div>
+//   );
+// };
 
-
-
-import React, { useEffect, useState } from "react";
-import "./ParkLevel.css";
-import Header from "./Header";
-import { Footer } from "./Footer";
+import React, { useState } from 'react';
 import Car from './Car';
-import Pay from "./PG/pay";
-import { io } from "socket.io-client";
+import Header from '../My_componants/Header';
+import { Footer } from '../My_componants/Footer';
+import Pay from './PG/pay';
 
 export const ParkLevel = () => {
-  const [receivedData, setReceivedData] = useState("");
-  const [buttonStatus, setButtonStatus] = useState({
-    1: false,
-    2: false,
-    3: false
-  });
+  const [selectedSlots, setSelectedSlots] = useState([]);
+  const [bookedSlots, setBookedSlots] = useState([]);
+  const [maxSelection, setMaxSelection] = useState(1); // Default to 1
 
-  useEffect(() => {
-    const socket = io('http://localhost:5500');
+  const handleSlotSelect = (slotNumber) => {
+    // If max selection is reached, return
+    if (selectedSlots.length === maxSelection) return;
 
-    socket.on('data', (data) => {
-      setReceivedData(data);
-      const parsedData = JSON.parse(data);
-      setButtonStatus({
-        ...buttonStatus,
-        [parsedData.bt_no]: parsedData.status === "Occupied" ? true : false
-      });
-    });
+    // If the slot is already selected, deselect it
+    if (selectedSlots.includes(slotNumber)) {
+      setSelectedSlots(selectedSlots.filter(slot => slot !== slotNumber));
+    } else {
+      // Otherwise, select it
+      setSelectedSlots([...selectedSlots, slotNumber]);
+    }
+  };
 
-    return () => {
-      socket.disconnect();
-    };
-  }, [buttonStatus]);
+  const handlePaymentSuccess = () => {
+    alert("Payment successful! You have booked slot number(s) " + selectedSlots.join(', '));
+    setBookedSlots([...bookedSlots, ...selectedSlots]);
+    setSelectedSlots([]); // Reset selected slots
+  };
+
+  const handleDropdownChange = (e) => {
+    setMaxSelection(parseInt(e.target.value));
+    setSelectedSlots([]); // Reset selected slots when changing max selection
+  };
 
   return (
     <div>
       <Header />
-
       <div className="col-12 d-flex justify-content-center align-items-center">
-        <Car bt_no={1} status={buttonStatus[1]} />
-        <Car bt_no={2} status={buttonStatus[2]} />
-        <Car bt_no={3} status={buttonStatus[3]} />
+        <Car slotNumber={1} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(1)} isBooked={bookedSlots.includes(1)} />
+        <Car slotNumber={2} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(2)} isBooked={bookedSlots.includes(2)} />
+        <Car slotNumber={3} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(3)} isBooked={bookedSlots.includes(3)} />
       </div>
-      <div className="col-12 d-flex justify-content-center align-items-center"><Pay></Pay></div>
+
+      <div>
+        <label htmlFor="slots">Number of slots to book:</label>
+        <select id="slots" value={maxSelection} onChange={handleDropdownChange}>
+          <option value={1}>1</option>
+          <option value={2}>2</option>
+          <option value={3}>3</option>
+        </select>
+      </div>
+
+      <Pay onPaymentSuccess={handlePaymentSuccess} maxSelection={maxSelection} selectedSlots={selectedSlots} />
       <Footer />
     </div>
   );
 };
 
+export default ParkLevel;
