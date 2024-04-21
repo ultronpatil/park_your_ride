@@ -155,13 +155,12 @@
 
 // export default Pay;
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import jsPDF from "jspdf";
 
 function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
   const [userData, setUserData] = useState({});
 
-  // Fetch user data
   useEffect(() => {
     fetchUserInfo();
   }, []);
@@ -200,7 +199,7 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
     });
   };
 
-  const generatePDF = (response) => {
+  const generatePDF = (response, amount) => {
     const pdf = new jsPDF();
     pdf.setFontSize(18);
     pdf.text(20, 20, "ParkYourRide Payment Receipt");
@@ -224,6 +223,9 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
     pdf.text(20, 100, `Gateway Provider: ${gatewayProvider}`);
     pdf.text(20, 110, `App Name: ${appName}`);
 
+    const totalAmount = amount * selectedSlots.length; // Calculate total amount
+    pdf.text(20, 120, `Total Amount: ${totalAmount} INR`);
+
     const pdfBlob = pdf.output("blob");
     const pdfName = "payment_details.pdf";
     const downloadLink = document.createElement("a");
@@ -235,7 +237,8 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
   };
 
   const pay = async () => {
-    let amount = 50;
+    const baseAmount = 50; // Base price for one slot
+    let amount = baseAmount * selectedSlots.length; // Calculate total amount
 
     const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
@@ -246,14 +249,14 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
 
     const options = {
       key: "rzp_test_xSvA8DOJ1bJvcC",
-      amount: parseInt(amount * 100 * maxSelection), // Multiply by max selection
+      amount: parseInt(amount * 100),
       currency: "INR",
       name: "ParkYourRide",
       description: "Test Transaction",
       image: "https://i.imgur.com/UgWZPTM.png",
       handler: function (response) {
         alert(response.razorpay_payment_id);
-        generatePDF(response);
+        generatePDF(response, baseAmount); // Pass base amount to generatePDF function
         sendPaymentDetailsToServer(response, amount);
       },
       notes: {
@@ -271,8 +274,7 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
   const sendPaymentDetailsToServer = async (response, amount) => {
     const paymentData = {
       paymentDetails: response,
-      amount: amount * maxSelection, // Multiply by max selection
-      slots: selectedSlots // Pass selected slots
+      amount: amount,
     };
 
     try {

@@ -192,30 +192,33 @@ import Pay from './PG/pay';
 export const ParkLevel = () => {
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [bookedSlots, setBookedSlots] = useState([]);
-  const [maxSelection, setMaxSelection] = useState(1); // Default to 1
+  const [maxSelection, setMaxSelection] = useState(1);
 
   const handleSlotSelect = (slotNumber) => {
-    // If max selection is reached, return
-    if (selectedSlots.length === maxSelection) return;
-
-    // If the slot is already selected, deselect it
     if (selectedSlots.includes(slotNumber)) {
       setSelectedSlots(selectedSlots.filter(slot => slot !== slotNumber));
     } else {
-      // Otherwise, select it
-      setSelectedSlots([...selectedSlots, slotNumber]);
+      if (selectedSlots.length < maxSelection) {
+        setSelectedSlots([...selectedSlots, slotNumber]);
+      } else {
+        setSelectedSlots([...selectedSlots.slice(1), slotNumber]);
+      }
     }
   };
 
   const handlePaymentSuccess = () => {
     alert("Payment successful! You have booked slot number(s) " + selectedSlots.join(', '));
     setBookedSlots([...bookedSlots, ...selectedSlots]);
-    setSelectedSlots([]); // Reset selected slots
+    setSelectedSlots([]);
   };
 
   const handleDropdownChange = (e) => {
-    setMaxSelection(parseInt(e.target.value));
-    setSelectedSlots([]); // Reset selected slots when changing max selection
+    const value = parseInt(e.target.value);
+    setMaxSelection(value);
+    if (selectedSlots.length > value) {
+      // Adjust selected slots if the number of selected slots is greater than the new max selection
+      setSelectedSlots(selectedSlots.slice(0, value));
+    }
   };
 
   return (
@@ -225,6 +228,9 @@ export const ParkLevel = () => {
         <Car slotNumber={1} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(1)} isBooked={bookedSlots.includes(1)} />
         <Car slotNumber={2} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(2)} isBooked={bookedSlots.includes(2)} />
         <Car slotNumber={3} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(3)} isBooked={bookedSlots.includes(3)} />
+        <Car slotNumber={4} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(4)} isBooked={bookedSlots.includes(4)} />
+        <Car slotNumber={5} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(5)} isBooked={bookedSlots.includes(5)} />
+
       </div>
 
       <div>
@@ -233,6 +239,8 @@ export const ParkLevel = () => {
           <option value={1}>1</option>
           <option value={2}>2</option>
           <option value={3}>3</option>
+          <option value={4}>4</option>
+          <option value={5}>5</option>
         </select>
       </div>
 
