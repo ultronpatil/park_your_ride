@@ -40,6 +40,10 @@
   background-color: lightgreen;
 }
 
+.car-slot.occupied {
+  background-color: rgb(252, 119, 119);
+}
+
 .car-slot:hover {
   background-color: #f0f0f0;
 }

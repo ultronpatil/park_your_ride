@@ -183,13 +183,38 @@
 //   );
 // };
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Car from './Car';
 import Header from '../My_componants/Header';
 import { Footer } from '../My_componants/Footer';
 import Pay from './PG/pay';
+import { io } from "socket.io-client";
 
 export const ParkLevel = () => {
+
+  const [sensorData, setSensorData] = useState("");
+  const [carState, setCarState] = useState({
+    1: false,
+    2: false
+  });
+
+  useEffect(() => {
+    const socket = io('http://localhost:5500');
+
+    socket.on('data', (data) => {
+      setSensorData(data);
+      const parsedData = JSON.parse(data);
+      setCarState({
+        ...carState,
+        [parsedData.slotNumber]: parsedData.state === "Occupied" ? true : false
+      });
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [carState]);
+
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [bookedSlots, setBookedSlots] = useState([]);
   const [maxSelection, setMaxSelection] = useState(1);
@@ -225,11 +250,11 @@ export const ParkLevel = () => {
     <div>
       <Header />
       <div className="col-12 d-flex justify-content-center align-items-center">
-        <Car slotNumber={1} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(1)} isBooked={bookedSlots.includes(1)} />
-        <Car slotNumber={2} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(2)} isBooked={bookedSlots.includes(2)} />
-        <Car slotNumber={3} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(3)} isBooked={bookedSlots.includes(3)} />
+        <Car slotNumber={1} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(1)} isBooked={bookedSlots.includes(1)} state={carState[1]} />
+        <Car slotNumber={2} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(2)} isBooked={bookedSlots.includes(2)} state={carState[2]} />
+        {/* <Car slotNumber={3} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(3)} isBooked={bookedSlots.includes(3)} />
         <Car slotNumber={4} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(4)} isBooked={bookedSlots.includes(4)} />
-        <Car slotNumber={5} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(5)} isBooked={bookedSlots.includes(5)} />
+        <Car slotNumber={5} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(5)} isBooked={bookedSlots.includes(5)} /> */}
       </div>
 
       <div>
@@ -237,9 +262,9 @@ export const ParkLevel = () => {
         <select id="slots" value={maxSelection} onChange={handleDropdownChange}>
           <option value={1}>1</option>
           <option value={2}>2</option>
-          <option value={3}>3</option>
+          {/* <option value={3}>3</option>
           <option value={4}>4</option>
-          <option value={5}>5</option>
+          <option value={5}>5</option> */}
         </select>
       </div>
 

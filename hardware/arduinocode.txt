@@ -1,35 +1,3 @@
-int IR1 = 2;
-int IR2 = 3;
-int reading;
-int w;
-
-void setup() {
-  pinMode(IR1, INPUT);
-  pinMode(IR2, INPUT);
-  Serial.begin(9600);
-}
-
-void loop() {
-  reading = digitalRead(IR1);
-  w = digitalRead(IR2);
-
-  if (reading == LOW) {
-    Serial.println("{\"bt_no\": \"1\", \"status\": \"Occupied\"}");
-  } else {
-    Serial.println("{\"bt_no\": \"1\", \"status\": \"Vacant\"}");
-  }
-
-  if (w == LOW) {
-    Serial.println("{\"bt_no\": \"2\", \"status\": \"Occupied\"}");
-  } else {
-    Serial.println("{\"bt_no\": \"2\", \"status\": \"Vacant\"}");
-  }
-
-  delay(500);
-} 
-
-
-
 int IR1 = 2;  // IR sensor pin for slot 1
 int IR2 = 3;  // IR sensor pin for slot 2
 int IR3 = 4;  // IR sensor pin for slot 3

@@ -181,19 +181,21 @@
 import React from 'react';
 import './Car.css';
 
-const Car = ({ slotNumber, onSlotSelect, isSelected, isBooked }) => {
+const Car = ({ slotNumber, onSlotSelect, isSelected, isBooked, state }) => {
     const handleClick = () => {
-        if (!isBooked) {
+        if (!isBooked && !state) { // Add condition to check if the slot is not booked and not occupied
             onSlotSelect(slotNumber);
             alert("Proceed to payment");
-        } else {
+        } else if (isBooked) {
             alert("This slot is already booked");
+        } else {
+            alert("This slot is occupied");
         }
     };
 
     return (
         <div
-            className={`car-slot ${isSelected ? 'selected' : ''} ${isBooked ? 'booked' : ''}`}
+            className={`car-slot ${isSelected ? 'selected' : ''} ${isBooked ? 'booked' : ''} ${state ? 'occupied' : ''}`} // Add 'occupied' class if the slot is occupied
             onClick={handleClick}
         >
             Car in slot {slotNumber}
