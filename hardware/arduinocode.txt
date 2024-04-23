@@ -27,3 +27,52 @@ void loop() {
 
   delay(500);
 } 
+
+
+
+int IR1 = 2;  // IR sensor pin for slot 1
+int IR2 = 3;  // IR sensor pin for slot 2
+int IR3 = 4;  // IR sensor pin for slot 3
+int IR4 = 5;  // IR sensor pin for slot 4
+int IR5 = 6;  // IR sensor pin for slot 5
+
+void setup() {
+  pinMode(IR1, INPUT);
+  pinMode(IR2, INPUT);
+  pinMode(IR3, INPUT);
+  pinMode(IR4, INPUT);
+  pinMode(IR5, INPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Read IR sensors
+  int reading1 = digitalRead(IR1);
+  int reading2 = digitalRead(IR2);
+  int reading3 = digitalRead(IR3);
+  int reading4 = digitalRead(IR4);
+  int reading5 = digitalRead(IR5);
+
+  // Send sensor data to serial port
+  Serial.print("{\"slotNumber\": 1, \"state\": \"");
+  Serial.print(reading1 == LOW ? "Occupied" : "Vacant");
+  Serial.println("\"}");
+
+  Serial.print("{\"slotNumber\": 2, \"state\": \"");
+  Serial.print(reading2 == LOW ? "Occupied" : "Vacant");
+  Serial.println("\"}");
+
+  Serial.print("{\"slotNumber\": 3, \"state\": \"");
+  Serial.print(reading3 == LOW ? "Occupied" : "Vacant");
+  Serial.println("\"}");
+
+  Serial.print("{\"slotNumber\": 4, \"state\": \"");
+  Serial.print(reading4 == LOW ? "Occupied" : "Vacant");
+  Serial.println("\"}");
+
+  Serial.print("{\"slotNumber\": 5, \"state\": \"");
+  Serial.print(reading5 == LOW ? "Occupied" : "Vacant");
+  Serial.println("\"}");
+
+  delay(500); // Delay between readings
+}

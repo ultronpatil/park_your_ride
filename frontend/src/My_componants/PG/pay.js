@@ -207,7 +207,6 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
     pdf.setFontSize(12);
     pdf.text(20, 30, `Payment ID: ${response.razorpay_payment_id}`);
     pdf.text(20, 40, `Payment Method: ${response.payment_method || "Unknown"}`);
-
     pdf.text(20, 50, `Name: ${userData.name || "Unknown"}`);
     pdf.text(20, 60, `Email: ${userData.email || "Unknown"}`);
 
@@ -223,7 +222,7 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
     pdf.text(20, 100, `Gateway Provider: ${gatewayProvider}`);
     pdf.text(20, 110, `App Name: ${appName}`);
 
-    const totalAmount = amount * selectedSlots.length; // Calculate total amount
+    const totalAmount = amount * selectedSlots.length;
     pdf.text(20, 120, `Total Amount: ${totalAmount} INR`);
 
     const pdfBlob = pdf.output("blob");
@@ -237,8 +236,8 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
   };
 
   const pay = async () => {
-    const baseAmount = 50; // Base price for one slot
-    let amount = baseAmount * selectedSlots.length; // Calculate total amount
+    const baseAmount = 50;
+    let amount = baseAmount * selectedSlots.length;
 
     const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
@@ -256,8 +255,9 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
       image: "https://i.imgur.com/UgWZPTM.png",
       handler: function (response) {
         alert(response.razorpay_payment_id);
-        generatePDF(response, baseAmount); // Pass base amount to generatePDF function
+        generatePDF(response, baseAmount);
         sendPaymentDetailsToServer(response, amount);
+        onPaymentSuccess(); // Call onPaymentSuccess here
       },
       notes: {
         address: "India",
@@ -291,7 +291,6 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
 
       if (res.ok) {
         console.log("Payment receipt saved successfully");
-        onPaymentSuccess();
       } else {
         console.error("Failed to save payment receipt:", res.statusText);
       }
@@ -305,7 +304,7 @@ function Pay({ onPaymentSuccess, maxSelection, selectedSlots }) {
       <button
         className="button_pay"
         onClick={pay}
-        disabled={selectedSlots.length === 0} // Disable button if no slots selected
+        disabled={selectedSlots.length === 0}
       >
         Pay & book
       </button>

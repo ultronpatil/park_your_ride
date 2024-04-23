@@ -204,6 +204,7 @@ export const ParkLevel = () => {
         setSelectedSlots([...selectedSlots.slice(1), slotNumber]);
       }
     }
+    alert(`Car in slot ${slotNumber} selected!`);
   };
 
   const handlePaymentSuccess = () => {
@@ -216,7 +217,6 @@ export const ParkLevel = () => {
     const value = parseInt(e.target.value);
     setMaxSelection(value);
     if (selectedSlots.length > value) {
-      // Adjust selected slots if the number of selected slots is greater than the new max selection
       setSelectedSlots(selectedSlots.slice(0, value));
     }
   };
@@ -230,7 +230,6 @@ export const ParkLevel = () => {
         <Car slotNumber={3} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(3)} isBooked={bookedSlots.includes(3)} />
         <Car slotNumber={4} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(4)} isBooked={bookedSlots.includes(4)} />
         <Car slotNumber={5} onSlotSelect={handleSlotSelect} isSelected={selectedSlots.includes(5)} isBooked={bookedSlots.includes(5)} />
-
       </div>
 
       <div>
