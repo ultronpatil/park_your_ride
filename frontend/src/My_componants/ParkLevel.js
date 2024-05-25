@@ -310,17 +310,20 @@ export const ParkLevel = () => {
 
 
 
-
   const handleReserveSlot = async (selectedSlots, userEmail) => {
-    console.log("this is inner log data" + selectedSlots);
+    console.log("this is inner log data", { selectedSlots, userEmail });
     try {
       const token = Cookies.get('jwtoken');
 
-      await axios.post('http://localhost:3002/reserveSlot', {
+      // Ensure selectedSlots is a string
+      if (Array.isArray(selectedSlots)) {
+        selectedSlots = selectedSlots[0]; // Assuming you want the first element if it's an array
+      }
+
+      const response = await axios.post('http://localhost:3002/reserveSlot', {
         selectedSlots: selectedSlots,
         email: userEmail
       }, {
-
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
@@ -328,12 +331,14 @@ export const ParkLevel = () => {
         withCredentials: true // Similar to credentials: 'include' in fetch
       });
 
+      alert('Slot reserved successfully');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error.response ? error.response.data : error.message);
       alert('Error reserving slot');
     }
-
   };
+
+
 
 
 
