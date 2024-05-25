@@ -31,6 +31,8 @@ const pdfRoute = require('./routes/saverecipt');
 app.use('/saverecipt', pdfRoute);
 const reserveSlotRoute = require('./routes/reserveSlot');
 app.use('/', reserveSlotRoute);
+const checkSlotStatus = require('./routes/checkSlotStatus');
+app.use('/', checkSlotStatus)
 const PORT = process.env.PORT;
 
 
