@@ -2,19 +2,22 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const express = require('express');
 const Razorpay = require('razorpay');
 const app = express();
 dotenv.config({ path: './config.env' });
 const vac1 = require('./models/vacantv1');
-
 const Transactions = require('./models/Transactions'); // Import your Transactions model
 const V1 = require('./models/vacantv1');
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_API_KEY,
   key_secret: process.env.RAZORPAY_API_SECRET,
 });
-
+app.use(cors({
+  origin: true, // Allow requests from any origin
+  credentials: true // Allow credentials
+}));
 app.use(express.json());
 
 app.use(require('./routes/auth'));
@@ -26,6 +29,8 @@ const resetPasswordRouter = require('./routes/resetpassword');
 app.use('/', resetPasswordRouter);
 const pdfRoute = require('./routes/saverecipt');
 app.use('/saverecipt', pdfRoute);
+const reserveSlotRoute = require('./routes/reserveSlot');
+app.use('/', reserveSlotRoute);
 const PORT = process.env.PORT;
 
 

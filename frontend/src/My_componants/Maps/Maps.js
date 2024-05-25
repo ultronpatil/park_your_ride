@@ -99,72 +99,132 @@
 // export default Maps;
 
 
+// import React, { useEffect, useState } from "react";
+// import { Button } from "react-bootstrap";
+// import Header from "../Header";
+// import { Footer } from "../Footer";
+// import * as atlas from 'azure-maps-control';
+// import './Maps.css'
+// const Maps = () => {
+//     const [mapLoaded, setMapLoaded] = useState(false);
+//     const [mapError, setMapError] = useState(null);
+//     let atlasScript; // Declare atlasScript outside of useEffect
+
+//     useEffect(() => {
+//         const loadMap = async () => {
+//             try {
+//                 atlasScript = document.createElement('script');
+//                 atlasScript.src = 'https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js';
+//                 atlasScript.async = true;
+//                 atlasScript.defer = true;
+//                 atlasScript.onload = () => setMapLoaded(true);
+//                 atlasScript.onerror = () => setMapError('Error loading Azure Maps SDK');
+//                 document.body.appendChild(atlasScript);
+//             } catch (error) {
+//                 console.error('Error loading Azure Maps SDK:', error);
+//                 setMapError('Error loading Azure Maps SDK');
+//             }
+//         };
+
+//         loadMap();
+
+//         return () => {
+//             if (atlasScript) {
+//                 document.body.removeChild(atlasScript);
+//             }
+//         };
+//     }, []);
+
+//     useEffect(() => {
+//         if (mapLoaded) {
+//             initializeMap();
+//         }
+//     }, [mapLoaded]);
+
+//     const initializeMap = () => {
+//         const map = new atlas.Map('map', {
+//             center: [-122.333, 47.6],
+//             zoom: 12,
+//             view: 'Auto',
+//             authOptions: {
+//                 authType: 'subscriptionKey',
+//                 subscriptionKey: 'jtHp2Z3FvRboZARVCUkZv0yqBhTHbrKKgc1uK7JR78g'
+//             }
+//         });
+//     };
+
+//     return (
+//         <>
+//             <Header />
+//             <div className="map-content">
+//                 <div id="map" style={{ width: "100%", height: "400px" }}>
+//                     {mapError && <div>{mapError}</div>}
+//                     {!mapError && !mapLoaded && <div>Loading...</div>}
+//                 </div>
+//             </div>
+//             <Footer />
+//         </>
+//     );
+// };
+
+// export default Maps;
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
-import Header from "../Header";
+import Cookies from "js-cookie";
+import { Button } from "react-bootstrap"; // Import Button from react-bootstrap
+import { BsArrowRepeat } from 'react-icons/bs';
+import Header from "../Header"
 import { Footer } from "../Footer";
-import * as atlas from 'azure-maps-control';
-import './Maps.css'
 const Maps = () => {
-    const [mapLoaded, setMapLoaded] = useState(false);
-    const [mapError, setMapError] = useState(null);
-    let atlasScript; // Declare atlasScript outside of useEffect
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
-        const loadMap = async () => {
-            try {
-                atlasScript = document.createElement('script');
-                atlasScript.src = 'https://atlas.microsoft.com/sdk/javascript/mapcontrol/2/atlas.min.js';
-                atlasScript.async = true;
-                atlasScript.defer = true;
-                atlasScript.onload = () => setMapLoaded(true);
-                atlasScript.onerror = () => setMapError('Error loading Azure Maps SDK');
-                document.body.appendChild(atlasScript);
-            } catch (error) {
-                console.error('Error loading Azure Maps SDK:', error);
-                setMapError('Error loading Azure Maps SDK');
-            }
-        };
-
-        loadMap();
-
-        return () => {
-            if (atlasScript) {
-                document.body.removeChild(atlasScript);
-            }
-        };
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    setCurrentLocation({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    });
+                },
+                (error) => {
+                    console.error('Error getting current location:', error);
+                }
+            );
+        }
     }, []);
 
-    useEffect(() => {
-        if (mapLoaded) {
-            initializeMap();
-        }
-    }, [mapLoaded]);
-
-    const initializeMap = () => {
-        const map = new atlas.Map('map', {
-            center: [-122.333, 47.6],
-            zoom: 12,
-            view: 'Auto',
-            authOptions: {
-                authType: 'subscriptionKey',
-                subscriptionKey: 'jtHp2Z3FvRboZARVCUkZv0yqBhTHbrKKgc1uK7JR78g'
-            }
-        });
+    const handleSearch = (e) => {
+        setSearchQuery(e.target.value);
     };
+
+    const getDirectionsLink = (destinationLatitude, destinationLongitude, currentLocation) => {
+        if (currentLocation) {
+            const { latitude, longitude } = currentLocation;
+            return `https://www.google.com/maps/dir/${latitude},${longitude}/${destinationLatitude},${destinationLongitude}`;
+        } else {
+            return `https://www.google.com/maps/dir/?api=1&destination=${destinationLatitude},${destinationLongitude}`;
+        }
+    };
+
 
     return (
         <>
             <Header />
-            <div className="map-content">
-                <div id="map" style={{ width: "100%", height: "400px" }}>
-                    {mapError && <div>{mapError}</div>}
-                    {!mapError && !mapLoaded && <div>Loading...</div>}
-                </div>
+            <div className="d-flex flex-wrap">
+                <Button variant="info" className="edit m-2">
+                    <a
+                        className="text-white"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={getDirectionsLink(18.4965, 73.8213)} // Coordinates for Karve Nagar, Pune
+                    >
+                        Maps
+                    </a>
+                </Button>
             </div>
             <Footer />
         </>
     );
 };
-
 export default Maps;

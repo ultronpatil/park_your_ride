@@ -45,9 +45,7 @@ const UserSchema = new mongoose.Schema({
       type: String,
       required: true
     }
-  }
-
-  ],
+  }],
   tokens: [
     {
       token: {
@@ -58,9 +56,14 @@ const UserSchema = new mongoose.Schema({
   ],
   pdfReceipts: [{
     type: String, // Store the PDF data as a base64 encoded string
-  }]
-})
-
+  }],
+  bookedSlots: [{
+    type: String // Assuming slots are identified by strings
+  }],
+  slot_number: {
+    type: String // Assuming slot_number is a string
+  }
+});
 
 UserSchema.pre('save', async function (next) {
   if (this.isModified('password')) {
@@ -69,7 +72,7 @@ UserSchema.pre('save', async function (next) {
   }
   console.log("password hashed");
   next();
-})
+});
 
 UserSchema.methods.generateAuthToken = async function () {
   try {
@@ -81,19 +84,33 @@ UserSchema.methods.generateAuthToken = async function () {
   catch (err) {
     console.log(err);
   }
-}
+};
 
 UserSchema.methods.addMessage = async function (name, email, message) {
   try {
-    this.messages = this.messages.concat({ name, email, message })
+    this.messages = this.messages.concat({ name, email, message });
     await this.save();
     return this.messages;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
-}
+};
 
-
+UserSchema.methods.reserveSlot = async function (slotNumber) {
+  try {
+    if (!this.bookedSlots.includes(slotNumber)) {
+      this.bookedSlots.push(slotNumber);
+      this.slot_number = slotNumber; // Update the slot_number
+      await this.save();
+      return true; // Reservation successful
+    } else {
+      return false; // Slot already booked by the user
+    }
+  } catch (error) {
+    console.log(error);
+    return false; // Error occurred
+  }
+};
 
 const User = mongoose.model('USER', UserSchema);
 
