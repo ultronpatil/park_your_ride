@@ -11,11 +11,7 @@ router.post('/reserveSlot', async (req, res) => {
     try {
         console.log("Received request body:", req.body);
 
-        let { selectedSlots, email } = req.body; // Extracting selectedSlots and email from request body
-
-        // Log the type of selectedSlots and email
-        console.log("selectedSlots type:", typeof selectedSlots);
-        console.log("email type:", typeof email);
+        let { selectedSlots, email } = req.body;
 
         // Ensure selectedSlots is a string
         if (Array.isArray(selectedSlots)) {
@@ -31,20 +27,18 @@ router.post('/reserveSlot', async (req, res) => {
         const user = await User.findOne({ email });
 
         if (user) {
-            // Check if the user already has booked slots, if not, initialize bookedSlots array
             if (!user.bookedSlots) {
                 user.bookedSlots = [];
             }
 
-            // Check if the selected slot is already booked by the user
             if (!user.bookedSlots.includes(selectedSlots)) {
-                // Reserve the slot for the user
                 user.bookedSlots.push(selectedSlots);
-                user.slot_number = selectedSlots; // Update the slot_number in the user document
-                await user.save(); // Save the changes to the user document
+                user.slot_number = selectedSlots;
+                await user.save();
 
                 console.log(`Reserving slot ${selectedSlots} for user ${email}`);
-                // Schedule the removal of the slot after 1 minute (60000 milliseconds)
+
+                // Schedule the removal of the slot after 1 minute
                 setTimeout(async () => {
                     try {
                         const updatedUser = await User.findOne({ email });
@@ -55,8 +49,6 @@ router.post('/reserveSlot', async (req, res) => {
                             }
                             await updatedUser.save();
                             console.log(`Slot ${selectedSlots} for user ${email} has been released`);
-                            console.log(`Updated bookedSlots: ${updatedUser.bookedSlots}`);
-                            console.log(`Updated slot_number: ${updatedUser.slot_number}`);
                         }
                     } catch (error) {
                         console.error("Error removing reserved slot:", error);
