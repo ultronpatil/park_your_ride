@@ -10,14 +10,11 @@ router.get('/checkSlotStatus/:slotNumber', async (req, res) => {
         // Check if the slot is booked by any user
         const users = await User.find({ bookedSlots: slotNumber });
 
-        // Check if the slot is currently occupied
-        // You might have a separate logic to track the occupancy status of each slot
-        const isOccupied = false; // Assuming not occupied for now
 
         if (users.length > 0) {
-            res.status(200).json({ booked: true, occupied: isOccupied });
+            res.status(200).json({ booked: true });
         } else {
-            // res.status(200).json({ booked: false, occupied: isOccupied });
+            res.status(200).json({ booked: false });
         }
     } catch (error) {
         console.error('Error checking slot status:', error);
