@@ -34,13 +34,6 @@ void loop() {
   Serial.print(reading3 == LOW ? "Occupied" : "Vacant");
   Serial.println("\"}");
 
-  Serial.print("{\"slotNumber\": 4, \"state\": \"");
-  Serial.print(reading4 == LOW ? "Occupied" : "Vacant");
-  Serial.println("\"}");
-
-  Serial.print("{\"slotNumber\": 5, \"state\": \"");
-  Serial.print(reading5 == LOW ? "Occupied" : "Vacant");
-  Serial.println("\"}");
 
   delay(500); // Delay between readings
 }
